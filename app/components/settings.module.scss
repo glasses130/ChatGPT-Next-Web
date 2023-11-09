@@ -1,23 +1,35 @@
+@import "./window.scss";
+
 .settings {
   padding: 20px;
   overflow: auto;
+}
+
+.settings-title {
+  font-size: 14px;
+  font-weight: bolder;
+}
+
+.settings-sub-title {
+  font-size: 12px;
+  font-weight: normal;
 }
 
 .avatar {
   cursor: pointer;
 }
 
-.edit-prompt-modal {
+.password-input-container {
+  max-width: 50%;
   display: flex;
-  flex-direction: column;
+  justify-content: flex-end;
 
-  .edit-prompt-title {
-    max-width: unset;
-    margin-bottom: 20px;
-    text-align: left;
+  .password-eye {
+    margin-right: 4px;
   }
-  .edit-prompt-content {
-    max-width: unset;
+
+  .password-input {
+    min-width: 80%;
   }
 }
 
@@ -32,41 +44,51 @@
   }
 
   .user-prompt-list {
-    border: var(--border-in-light);
-    border-radius: 10px;
+    padding: 10px 0;
 
     .user-prompt-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px;
-
-      &:not(:last-child) {
-        border-bottom: var(--border-in-light);
-      }
+      margin-bottom: 10px;
+      widows: 100%;
 
       .user-prompt-header {
-        max-width: calc(100% - 100px);
+        display: flex;
+        widows: 100%;
+        margin-bottom: 5px;
 
         .user-prompt-title {
-          font-size: 14px;
-          line-height: 2;
-          font-weight: bold;
-        }
-        .user-prompt-content {
+          flex-grow: 1;
+          max-width: 100%;
+          margin-right: 5px;
+          padding: 5px;
           font-size: 12px;
+          text-align: left;
+        }
+
+        .user-prompt-buttons {
+          display: flex;
+          align-items: center;
+
+          .user-prompt-button {
+            height: 100%;
+
+            &:not(:last-child) {
+              margin-right: 5px;
+            }
+          }
         }
       }
 
-      .user-prompt-buttons {
-        display: flex;
-        align-items: center;
-        column-gap: 2px;
-
-        .user-prompt-button {
-          //height: 100%;
-          padding: 7px;
-        }
+      .user-prompt-content {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 5px;
+        margin-right: 10px;
+        font-size: 12px;
+        flex-grow: 1;
       }
     }
+  }
+
+  .user-prompt-actions {
   }
 }

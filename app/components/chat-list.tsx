@@ -1,6 +1,4 @@
 import DeleteIcon from "../icons/delete.svg";
-import BotIcon from "../icons/bot.svg";
-
 import styles from "./home.module.scss";
 import {
   DragDropContext,
@@ -14,11 +12,6 @@ import { useChatStore } from "../store";
 import Locale from "../locales";
 import { Link, useNavigate } from "react-router-dom";
 import { Path } from "../constant";
-import { MaskAvatar } from "./mask";
-import { Mask } from "../store/mask";
-import { useRef, useEffect } from "react";
-import { showConfirm } from "./ui-lib";
-import { useMobileScreen } from "../utils";
 
 export function ChatItem(props: {
   onClick?: () => void;
@@ -27,19 +20,10 @@ export function ChatItem(props: {
   count: number;
   time: string;
   selected: boolean;
-  id: string;
+  id: number;
   index: number;
   narrow?: boolean;
-  mask: Mask;
 }) {
-  const draggableRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    if (props.selected && draggableRef.current) {
-      draggableRef.current?.scrollIntoView({
-        block: "center",
-      });
-    }
-  }, [props.selected]);
   return (
     <Draggable draggableId={`${props.id}`} index={props.index}>
       {(provided) => (
@@ -48,25 +32,12 @@ export function ChatItem(props: {
             props.selected && styles["chat-item-selected"]
           }`}
           onClick={props.onClick}
-          ref={(ele) => {
-            draggableRef.current = ele;
-            provided.innerRef(ele);
-          }}
+          ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          title={`${props.title}\n${Locale.ChatItem.ChatItemCount(
-            props.count,
-          )}`}
         >
           {props.narrow ? (
-            <div className={styles["chat-item-narrow"]}>
-              <div className={styles["chat-item-avatar"] + " no-dark"}>
-                <MaskAvatar mask={props.mask} />
-              </div>
-              <div className={styles["chat-item-narrow-count"]}>
-                {props.count}
-              </div>
-            </div>
+            <div className={styles["chat-item-narrow"]}>{props.count}</div>
           ) : (
             <>
               <div className={styles["chat-item-title"]}>{props.title}</div>
@@ -79,14 +50,7 @@ export function ChatItem(props: {
             </>
           )}
 
-          <div
-            className={styles["chat-item-delete"]}
-            onClickCapture={(e) => {
-              props.onDelete?.();
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-          >
+          <div className={styles["chat-item-delete"]} onClick={props.onDelete}>
             <DeleteIcon />
           </div>
         </div>
@@ -96,17 +60,16 @@ export function ChatItem(props: {
 }
 
 export function ChatList(props: { narrow?: boolean }) {
-  const [sessions, selectedIndex, selectSession, moveSession] = useChatStore(
-    (state) => [
+  const [sessions, selectedIndex, selectSession, removeSession, moveSession] =
+    useChatStore((state) => [
       state.sessions,
       state.currentSessionIndex,
       state.selectSession,
+      state.removeSession,
       state.moveSession,
-    ],
-  );
+    ]);
   const chatStore = useChatStore();
   const navigate = useNavigate();
-  const isMobileScreen = useMobileScreen();
 
   const onDragEnd: OnDragEndResponder = (result) => {
     const { destination, source } = result;
@@ -136,7 +99,7 @@ export function ChatList(props: { narrow?: boolean }) {
             {sessions.map((item, i) => (
               <ChatItem
                 title={item.topic}
-                time={new Date(item.lastUpdate).toLocaleString()}
+                time={item.lastUpdate}
                 count={item.messages.length}
                 key={item.id}
                 id={item.id}
@@ -146,16 +109,12 @@ export function ChatList(props: { narrow?: boolean }) {
                   navigate(Path.Chat);
                   selectSession(i);
                 }}
-                onDelete={async () => {
-                  if (
-                    (!props.narrow && !isMobileScreen) ||
-                    (await showConfirm(Locale.Home.DeleteChat))
-                  ) {
+                onDelete={() => {
+                  if (!props.narrow || confirm(Locale.Home.DeleteChat)) {
                     chatStore.deleteSession(i);
                   }
                 }}
                 narrow={props.narrow}
-                mask={item.mask}
               />
             ))}
             {provided.placeholder}

@@ -1,11 +1,11 @@
 import { SubmitKey } from "../store/config";
-import type { PartialLocaleType } from "./index";
+import type { LocaleType } from "./index";
 
-const tr: PartialLocaleType = {
+const tr: LocaleType = {
   WIP: "Çalışma devam ediyor...",
   Error: {
     Unauthorized:
-      "Yetkisiz erişim, lütfen erişim kodunu ayarlar [sayfasından](/#/auth) giriniz.",
+      "Yetkisiz erişim, lütfen erişim kodunu ayarlar sayfasından giriniz.",
   },
   ChatItem: {
     ChatItemCount: (count: number) => `${count} mesaj`,
@@ -31,10 +31,6 @@ const tr: PartialLocaleType = {
       return inputHints + ", komutları aramak için / (eğik çizgi)";
     },
     Send: "Gönder",
-    Config: {
-      Reset: "Reset to Default",
-      SaveAs: "Save as Mask",
-    },
   },
   Export: {
     Title: "Tüm Mesajlar",
@@ -61,20 +57,34 @@ const tr: PartialLocaleType = {
   Settings: {
     Title: "Ayarlar",
     SubTitle: "Tüm Ayarlar",
-
+    Actions: {
+      ClearAll: "Tüm Verileri Temizle",
+      ResetAll: "Tüm Ayarları Sıfırla",
+      Close: "Kapat",
+      ConfirmResetAll: {
+        Confirm: "Tüm ayarları sıfırlamak istediğinizden emin misiniz?",
+      },
+      ConfirmClearAll: {
+        Confirm: "Tüm sohbeti sıfırlamak istediğinizden emin misiniz?",
+      },
+    },
     Lang: {
       Name: "Language", // ATTENTION: if you wanna add a new translation, please do not translate this value, leave it as `Language`
-      All: "Tüm Diller",
+      Options: {
+        cn: "简体中文",
+        en: "English",
+        tw: "繁體中文",
+        es: "Español",
+        it: "Italiano",
+        tr: "Türkçe",
+        jp: "日本語",
+        de: "Deutsch",
+      },
     },
     Avatar: "Avatar",
     FontSize: {
       Title: "Yazı Boyutu",
       SubTitle: "Sohbet içeriğinin yazı boyutunu ayarlayın",
-    },
-    InjectSystemPrompts: {
-      Title: "Sistem İpucu Ekleyin",
-      SubTitle:
-        "Her istek için ileti listesinin başına simüle edilmiş bir ChatGPT sistem ipucu ekleyin",
     },
     Update: {
       Version: (x: string) => `Sürüm: ${x}`,
@@ -87,16 +97,7 @@ const tr: PartialLocaleType = {
     SendKey: "Gönder Tuşu",
     Theme: "Tema",
     TightBorder: "Tam Ekran",
-    SendPreviewBubble: {
-      Title: "Mesaj Önizleme Balonu",
-      SubTitle: "Preview markdown in bubble",
-    },
-    Mask: {
-      Splash: {
-        Title: "Mask Splash Screen",
-        SubTitle: "Show a mask splash screen before starting new chat",
-      },
-    },
+    SendPreviewBubble: "Mesaj Önizleme Balonu",
     Prompt: {
       Disable: {
         Title: "Otomatik tamamlamayı devre dışı bırak",
@@ -110,9 +111,6 @@ const tr: PartialLocaleType = {
         Title: "Prompt List",
         Add: "Add One",
         Search: "Search Prompts",
-      },
-      EditModal: {
-        Title: "Edit Prompt",
       },
     },
     HistoryCount: {
@@ -154,15 +152,10 @@ const tr: PartialLocaleType = {
       SubTitle:
         "Girdi belirteçlerinin ve oluşturulan belirteçlerin maksimum uzunluğu",
     },
-    PresencePenalty: {
+    PresencePenlty: {
       Title: "Varlık Cezası",
       SubTitle:
         "Daha büyük bir değer, yeni konular hakkında konuşma olasılığını artırır",
-    },
-    FrequencyPenalty: {
-      Title: "Frekans Cezası",
-      SubTitle:
-        "Aynı satırı tekrar etme olasılığını azaltan daha büyük bir değer",
     },
   },
   Store: {
@@ -178,6 +171,8 @@ const tr: PartialLocaleType = {
       Summarize:
         "Gelecekteki bağlam için bir bilgi istemi olarak kullanmak üzere tartışmamızı en fazla 200 kelimeyle özetleyin.",
     },
+    ConfirmClearAll:
+      "Tüm sohbet ve ayar verilerini temizlemeyi onaylıyor musunuz?",
   },
   Copy: {
     Success: "Panoya kopyalandı",
@@ -187,62 +182,6 @@ const tr: PartialLocaleType = {
     Toast: (x: any) => `${x} bağlamsal bellek komutu`,
     Edit: "Bağlamsal ve Bellek Komutları",
     Add: "Yeni Ekle",
-  },
-  Plugin: {
-    Name: "Plugin",
-  },
-  FineTuned: {
-    Sysmessage: "Sen bir asistansın",
-  },
-  Mask: {
-    Name: "Mask",
-    Page: {
-      Title: "Prompt Template",
-      SubTitle: (count: number) => `${count} prompt templates`,
-      Search: "Search Templates",
-      Create: "Create",
-    },
-    Item: {
-      Info: (count: number) => `${count} prompts`,
-      Chat: "Chat",
-      View: "View",
-      Edit: "Edit",
-      Delete: "Delete",
-      DeleteConfirm: "Confirm to delete?",
-    },
-    EditModal: {
-      Title: (readonly: boolean) =>
-        `Edit Prompt Template ${readonly ? "(readonly)" : ""}`,
-      Download: "Download",
-      Clone: "Clone",
-    },
-    Config: {
-      Avatar: "Bot Avatar",
-      Name: "Bot Name",
-    },
-  },
-  NewChat: {
-    Return: "Return",
-    Skip: "Skip",
-    Title: "Pick a Mask",
-    SubTitle: "Chat with the Soul behind the Mask",
-    More: "Find More",
-    NotShow: "Not Show Again",
-    ConfirmNoShow: "Confirm to disable？You can enable it in settings later.",
-  },
-
-  UI: {
-    Confirm: "Confirm",
-    Cancel: "Cancel",
-    Close: "Close",
-    Create: "Create",
-    Edit: "Edit",
-  },
-  Exporter: {
-    Model: "Model",
-    Messages: "Mesajlar",
-    Topic: "Konu",
-    Time: "Zaman",
   },
 };
 

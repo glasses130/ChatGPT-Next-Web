@@ -1,11 +1,7 @@
 import React from "react";
 import { IconButton } from "./button";
 import GithubIcon from "../icons/github.svg";
-import ResetIcon from "../icons/reload.svg";
 import { ISSUE_URL } from "../constant";
-import Locale from "../locales";
-import { showConfirm } from "./ui-lib";
-import { useSyncStore } from "../store/sync";
 
 interface IErrorBoundaryState {
   hasError: boolean;
@@ -24,15 +20,6 @@ export class ErrorBoundary extends React.Component<any, IErrorBoundaryState> {
     this.setState({ hasError: true, error, info });
   }
 
-  clearAndSaveData() {
-    try {
-      useSyncStore.getState().export();
-    } finally {
-      localStorage.clear();
-      location.reload();
-    }
-  }
-
   render() {
     if (this.state.hasError) {
       // Render error message
@@ -44,25 +31,13 @@ export class ErrorBoundary extends React.Component<any, IErrorBoundaryState> {
             <code>{this.state.info?.componentStack}</code>
           </pre>
 
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <a href={ISSUE_URL} className="report">
-              <IconButton
-                text="Report This Error"
-                icon={<GithubIcon />}
-                bordered
-              />
-            </a>
+          <a href={ISSUE_URL} className="report">
             <IconButton
-              icon={<ResetIcon />}
-              text="Clear All Data"
-              onClick={async () => {
-                if (await showConfirm(Locale.Settings.Danger.Reset.Confirm)) {
-                  this.clearAndSaveData();
-                }
-              }}
+              text="Report This Error"
+              icon={<GithubIcon />}
               bordered
             />
-          </div>
+          </a>
         </div>
       );
     }
